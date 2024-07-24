@@ -125,6 +125,29 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+#portfolio > nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 32px 0;
+}
+
+#portfolio > nav > button { 
+	margin: 0 8px;
+	font-family: 'Syne';
+	padding: 8px 16px;
+	border: 1px solid #1D6154;
+	background-color: transparent;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+#portfolio > nav > button.active {
+	background-color: #1D6154;
+	color: #fff;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
