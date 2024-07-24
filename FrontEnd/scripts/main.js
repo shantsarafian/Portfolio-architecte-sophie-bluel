@@ -1,7 +1,10 @@
-function makeState(categories, works) {
+const defaultCategory = "Tous";
+
+function makeState(works) {
+    const categories = works.map(work => work.category.name);
     return {
-        activeCategory: 0,
-        categories,
+        activeCategory: defaultCategory,
+        categories: new Set(categories),
         works
     };
 };
@@ -10,7 +13,7 @@ function renderWorks(state) {
     const container = document.querySelector("#portfolio > .gallery");
     container.innerHTML = "";
     const filteredWorks = state.works.filter(work =>
-        state.activeCategory == 0 || work.category.id == state.activeCategory
+        state.activeCategory == defaultCategory || work.category.name == state.activeCategory
     );
     filteredWorks.forEach(element => {
         const figure = document.createElement("figure");
@@ -27,14 +30,14 @@ function renderWorks(state) {
     return state;
 }
 
-function renderButton(state, id, name, container) {
+function renderButton(state, name, container) {
     const text = document.createTextNode(name);
     const button = document.createElement("button");
-    if (id == state.activeCategory) {
+    if (name == state.activeCategory) {
         button.classList.add("active");
     }
     button.addEventListener("click", () => {
-        state.activeCategory = id;
+        state.activeCategory = name;
         renderApplication(state);
     });
     button.appendChild(text);
@@ -44,9 +47,9 @@ function renderButton(state, id, name, container) {
 function renderCategories(state) {
     const container = document.querySelector("#portfolio > nav");
     container.innerHTML = "";
-    renderButton(state, 0, "Tous", container);
+    renderButton(state, defaultCategory, container);
     state.categories.forEach(category => {
-        renderButton(state, category.id, category.name, container);
+        renderButton(state, category, container);
     });
     return state;
 }
@@ -63,21 +66,15 @@ async function getWorks() {
     return json;
 }
 
-async function getCategories() {
-    const response = await fetch("http://localhost:5678/api/categories");
-    const json = await response.json();
-    return json;
-}
-
 
 async function getData() {
-    const categories = await getCategories();
     const works = await getWorks();
-    return makeState(categories, works);
+    return makeState(works);
 }
 
 async function run() {
     const state = await getData();
+    console.log(state);
     renderApplication(state);
 }
 
