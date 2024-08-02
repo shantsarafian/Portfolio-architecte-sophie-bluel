@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
@@ -52,12 +53,22 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
+
+
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
+
+main {
+	flex: 1;
+}
+
 section {
 	margin: 50px 0
 }
@@ -95,9 +106,28 @@ nav li {
 	font-size: 1.2em;
 }
 
+nav li a {
+	text-decoration: none;
+	color: inherit;
+}
+
+nav li a.active {
+	font-weight: 900;
+}
+
+nav li a:hover {
+	text-decoration: none;
+	color: #B1663C;
+}
+
 li:hover {
 	color: #B1663C;
 }
+
+#login {
+	margin: 96px auto;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -121,6 +151,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -160,17 +191,25 @@ li:hover {
 	width: 100%;
 
 }
+
+#login,
 #contact {
 	width: 50%;
-margin: auto;
+    margin: auto;
 }
+
+#login,
 #contact > * {
 	text-align: center;
 
 }
+
+#login h2,
 #contact h2{
 	margin-bottom: 20px;
 }
+
+#login form,
 #contact form {
 	text-align: left;
 	margin-top:30px;
@@ -178,12 +217,20 @@ margin: auto;
 	flex-direction: column;
 }
 
+#login input,
 #contact input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
+#login form {
+	width: 80%;
+	margin: auto;
+}
+
+#login label,
 #contact label {
 	margin: 2em 0 1em 0;
 }
@@ -192,7 +239,8 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+#login input[type="submit"],
+#contact input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -203,9 +251,27 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+#login input[type="submit"] {
+	width: auto;
+	padding: 0 64px;
+	margin : 2em auto ;
+}
+
+#login form a {
+	margin: auto;
+	color: black;
+}
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
 }
 
+#error {
+	color: red;
+}
+
+#error:empty{
+	display: none;
+}
