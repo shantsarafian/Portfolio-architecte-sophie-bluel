@@ -209,6 +209,13 @@ li:hover {
 	margin-bottom: 20px;
 }
 
+#modal form {
+	font-size: 200%;
+	width: 100%;
+	margin: auto;
+}
+
+#modal form,
 #login form,
 #contact form {
 	text-align: left;
@@ -217,12 +224,20 @@ li:hover {
 	flex-direction: column;
 }
 
+#modal form input,
+#modal form select,
 #login input,
 #contact input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	background-color: transparent;
+}
+
+#modal form label {
+	margin-top: 32px;
+	margin-bottom: 12px;
 }
 
 #login form {
@@ -230,6 +245,7 @@ li:hover {
 	margin: auto;
 }
 
+#modal form,
 #login label,
 #contact label {
 	margin: 2em 0 1em 0;
@@ -239,6 +255,8 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+.action-btn,
+#modal form input[type="submit"],
 #login input[type="submit"],
 #contact input[type="submit"]{
 	font-family: 'Syne';
@@ -251,10 +269,19 @@ li:hover {
 	border-radius: 60px ;
 }
 
+
 #login input[type="submit"] {
 	width: auto;
 	padding: 0 64px;
 	margin : 2em auto ;
+}
+
+.action-btn {
+	font-size: 200%;
+	width: auto;
+	padding: 12px 64px;
+	display: block;
+	margin: 64px auto;
 }
 
 #login form a {
@@ -325,8 +352,13 @@ footer nav ul {
 
 
 .modal > div:last-child > nav {
-	text-align: right;
 	font-size: 200%;
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.modal > div:last-child > nav > i:last-child {
+	flex: 1;
 }
 
 .modal > div:last-child > nav > i {

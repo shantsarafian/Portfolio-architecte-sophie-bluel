@@ -3,16 +3,18 @@ let state = {
     activeCategory: defaultCategory,
     categories: new Set(),
     works: [],
-    modalState: "not-open"
+    modalState: "not-open",
+    realCategories: []
 };
 
-function makeState(works) {
+function makeState(works, realCategories) {
     const categories = works.map(work => work.category.name);
     state = {
         activeCategory: defaultCategory,
         categories: new Set(categories),
         works,
-        modalState: "not-open"
+        modalState: "not-open",
+        realCategories
     };
 };
 
@@ -71,10 +73,17 @@ async function getWorks() {
     return json;
 }
 
+async function getCategories() {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const json = await response.json();
+    return json;
+}
+
 
 async function getData() {
     const works = await getWorks();
-    makeState(works);
+    const categories = await getCategories();
+    makeState(works, categories);
 }
 
 async function runGallery() {
@@ -106,8 +115,75 @@ function eraseModal() {
     }
 }
 
-function fillModalAddition(ctn) {
-    alert("Not implemented yet");
+function createInput(id, title, ctn) {
+    const txt = document.createTextNode(title);
+    const label = document.createElement("label");
+    label.appendChild(txt);
+    label.htmlFor = id;
+    const input = document.createElement("input");
+    input.id = id;
+    input.name = id;
+    ctn.appendChild(label);
+    ctn.appendChild(input);
+    return input;
+}
+
+function createList(id, title, ctn) {
+    const txt = document.createTextNode(title);
+    const label = document.createElement("label");
+    label.appendChild(txt);
+    label.htmlFor = id;
+    const input = document.createElement("select");
+    input.id = id;
+    input.name = id;
+    state.realCategories.forEach((category) => {
+        const optn = document.createElement("option");
+        optn.value = category.id;
+        optn.appendChild(document.createTextNode(category.name));
+        input.appendChild(optn);
+    });
+    ctn.appendChild(label);
+    ctn.appendChild(input);
+    return input;
+}
+
+function fillModalAddition(ctn, nav) {
+    const prevIcon = createIcon(["fa-solid", "fa-arrow-left"]);
+    const txt = document.createTextNode("Ajout photo");
+    const title = document.createElement("h3");
+    const form = document.createElement("form");
+    prevIcon.addEventListener("click", () => {
+        state.modalState = "updating";
+        createModal();
+    });
+    nav.appendChild(prevIcon);
+    title.appendChild(txt);
+    ctn.appendChild(title);
+    const file = document.createElement("input");
+    file.id = "file";
+    file.name = "image";
+    file.type ="file";
+    form.appendChild(file);
+    const t = createInput("title", "Titre", form);
+    const l = createList("category", "Catégorie", form);
+    const sub = document.createElement("input");
+    sub.type = "submit"
+    sub.value = "Valider"
+    form.appendChild(sub);
+    ctn.appendChild(form);
+    form.enctype = "multipart/form-data";
+    form.method = "post";
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const fd = new FormData(form);
+        const o = { 
+            method: "post", 
+            body: fd,
+            headers: {Authorization: 'Bearer ' + localStorage.getItem("token")}
+        };
+        const resp = await fetch("http://localhost:5678/api/works/", o);
+        console.log(resp);
+    });
 }
 
 function fillModalEdition(ctn) {
@@ -134,6 +210,7 @@ function fillModalEdition(ctn) {
                 console.log("Work erased");
                 const container = document.querySelector("#portfolio > .gallery");
                 const fig = document.getElementById("figure-" + id);
+                state.works = state.works.filter((work) => work.id !== id);
                 container.removeChild(fig);
                 grid.removeChild(div);
                 
@@ -143,21 +220,36 @@ function fillModalEdition(ctn) {
             }
         });
     });
+    const hr = document.createElement("hr");
+    const buttonAdd = document.createElement("button");
+    buttonAdd.appendChild(document.createTextNode("Ajouter une photo"))
+    buttonAdd.classList.add("action-btn");
+    buttonAdd.addEventListener("click", () => {
+        state.modalState = "adding";
+        createModal();
+
+    });
     title.appendChild(txt);
     ctn.appendChild(title);
     ctn.appendChild(grid);
+    ctn.appendChild(hr);
+    ctn.appendChild(buttonAdd);
 }
  
-function fillModalContent(ctn) {
+function fillModalContent(ctn, nav) {
     if(state.modalState == "updating") {
         fillModalEdition(ctn);
     } else if (state.modalState == "adding") {
-        fillModalAddition(ctn);
+        fillModalAddition(ctn, nav);
     }
 }
 
 function createModal() {
     const body = document.querySelector("body");
+    const prevModal = document.getElementById("modal");
+    if(prevModal) {
+        body.removeChild(prevModal);
+    }
     const modal = document.createElement("div");
     modal.id = "modal"
     const bg = document.createElement("div");
@@ -172,7 +264,7 @@ function createModal() {
     body.appendChild(modal);
     closeIcon.addEventListener("click", function() { eraseModal() });
     bg.addEventListener("click", function() { eraseModal() });
-    fillModalContent(ctn);
+    fillModalContent(ctn, nav);
     return modal;
 }
 
@@ -187,10 +279,11 @@ function runAdmin() {
             } else {
                 state.modalState = "updating";
                 console.log("opening");
-                const body = document.querySelector("body");
-                const modal = createModal();
+                createModal();
             }
         });
+    } else {
+        console.log("arf")
     }
 }
 
