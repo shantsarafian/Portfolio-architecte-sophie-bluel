@@ -346,6 +346,7 @@ footer nav ul {
 	left: 50%;
   	transform: translate(-50%, -50%);
 	width: 60%;
+	max-width: 650px;
 	padding: 32px;
 	border-radius: 20px;
 }
@@ -395,4 +396,31 @@ footer nav ul {
 	position: absolute;
 	top: 6px;
 	right: 6px;
+}
+
+.image_file {
+	height: 190px;
+	width: 100%;
+	background-color: #e8f1f6;
+	text-align: center;
+}
+
+input[type="file"]{
+	text-align: center;
+	width: 100%;
+}
+
+input[type="file"]::file-selector-button{
+	margin-right: 8px;
+	border: none;
+	background: #CBD6DC;
+	padding: 8px 12px;
+	color: #306685;
+	cursor: pointer;
+	border-radius: 50px;
+}
+
+.p_file {
+	color: black;
+	font-size: 0.8em;
 }

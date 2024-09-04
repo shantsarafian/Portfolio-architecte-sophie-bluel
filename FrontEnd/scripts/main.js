@@ -160,10 +160,17 @@ function fillModalAddition(ctn, nav) {
     title.appendChild(txt);
     ctn.appendChild(title);
     const file = document.createElement("input");
+    const div_file = document.createElement("div");
     file.id = "file";
+    const p_file = document.createElement("p");
+    p_file.textContent = "jpg,png:4mo max";
+    p_file.classList.add ("p_file");
     file.name = "image";
     file.type ="file";
-    form.appendChild(file);
+    div_file.classList.add("image_file");
+    div_file.appendChild(file);
+    div_file.appendChild(p_file);
+    form.appendChild(div_file);
     const t = createInput("title", "Titre", form);
     const l = createList("category", "Catégorie", form);
     const sub = document.createElement("input");
