@@ -161,15 +161,25 @@ function fillModalAddition(ctn, nav) {
     ctn.appendChild(title);
     const file = document.createElement("input");
     const div_file = document.createElement("div");
-    file.id = "file";
-    const p_file = document.createElement("p");
-    p_file.textContent = "jpg,png:4mo max";
-    p_file.classList.add ("p_file");
+    file.hidden = true;
+    const file_label = document.createElement("label");
+    const placeholder_upload_button = document.createElement("span");
+    placeholder_upload_button.appendChild(document.createTextNode("+ Ajouter photo"));
+    placeholder_upload_button.classList.add("placeholder_button");
+    file_label.htmlFor = "image";
+    file_label.classList.add ("file_label");
+    const uploadIcon = createIcon(["fa-regular", "fa-image"]);
+    const limitation = document.createElement("p");
+    limitation.textContent = "jpg,png:4mo max";
+    file_label.appendChild(uploadIcon);
+    file_label.appendChild(placeholder_upload_button);
+    file_label.appendChild(limitation);
+    file.id = "image";
     file.name = "image";
     file.type ="file";
     div_file.classList.add("image_file");
     div_file.appendChild(file);
-    div_file.appendChild(p_file);
+    div_file.appendChild(file_label);
     form.appendChild(div_file);
     const t = createInput("title", "Titre", form);
     const l = createList("category", "Catégorie", form);
@@ -180,6 +190,19 @@ function fillModalAddition(ctn, nav) {
     ctn.appendChild(form);
     form.enctype = "multipart/form-data";
     form.method = "post";
+    file.addEventListener("change", (event) => {
+        const files = event.target.files;
+        if (files[0]) {
+            const uri = URL.createObjectURL(files[0]);
+            file_label.innerHTML = "";
+            const img = document.createElement("img");
+            img.src = uri;
+            file_label.appendChild(img);
+        } else {
+            state.modalState = "adding";
+            createModal();
+        }
+    });
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const fd = new FormData(form);
@@ -190,6 +213,8 @@ function fillModalAddition(ctn, nav) {
         };
         const resp = await fetch("http://localhost:5678/api/works/", o);
         console.log(resp);
+        eraseModal();
+        await runGallery();
     });
 }
 
@@ -217,6 +242,7 @@ function fillModalEdition(ctn) {
                 console.log("Work erased");
                 const container = document.querySelector("#portfolio > .gallery");
                 const fig = document.getElementById("figure-" + id);
+                console.log(container, fig);
                 state.works = state.works.filter((work) => work.id !== id);
                 container.removeChild(fig);
                 grid.removeChild(div);

@@ -399,7 +399,6 @@ footer nav ul {
 }
 
 .image_file {
-	height: 190px;
 	width: 100%;
 	background-color: #e8f1f6;
 	text-align: center;
@@ -420,7 +419,38 @@ input[type="file"]::file-selector-button{
 	border-radius: 50px;
 }
 
-.p_file {
+.file_label {
 	color: black;
 	font-size: 0.8em;
+	display: block;
+	margin: 0 !important;
+	padding: 32px;
+}
+
+.file_label > .fa-regular {
+	font-size: 400%;
+	color: #CBD6DC;
+	display: block;
+}
+
+.file_label > .placeholder_button {
+	color: #306685;
+	background-color: #CBD6DC;
+	display: inline-block;
+	margin-top: 32px;
+	padding: 8px 32px;
+	border-radius: 20px;
+}
+
+.file_label > p {
+	font-size: 75%;
+	margin-top: 16px;
+	font-weight: 700;
+}
+
+.file_label > img {
+	display: block;
+	height: 380px;
+	width: auto;
+	margin: 8px auto;
 }
