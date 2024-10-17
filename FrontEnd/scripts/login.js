@@ -23,8 +23,10 @@ async function connect(email, password) {
 }
 
 function storeConnectionInformation(userId, token) {
+    const expirationTime = computeExpirationTime().getTime();
     localStorage.setItem("userId", userId);
     localStorage.setItem("token", token);
+    localStorage.setItem("tokenExpiration", expirationTime);
 }
 
 async function run(){

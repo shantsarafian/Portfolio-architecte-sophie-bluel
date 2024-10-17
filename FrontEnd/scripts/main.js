@@ -65,7 +65,7 @@ function renderCategories() {
 function renderApplication() {
     renderCategories();
     renderWorks();
-}
+}    
 
 async function getWorks() {
     const response = await fetch("http://localhost:5678/api/works");
@@ -319,6 +319,7 @@ function runAdmin() {
         console.log("arf")
     }
 }
+
 
 async function run() {
     await runGallery();
